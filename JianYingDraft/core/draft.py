@@ -19,6 +19,7 @@ from JianYingDraft.core.mediaFactory import MediaFactory
 from JianYingDraft.core.mediaEffect import MediaEffect
 from JianYingDraft.core import template
 from JianYingDraft.core.mediaSubtitle import MediaSubtitle
+from JianYingDraft.core.mediaText import MediaText
 
 
 class Draft:
@@ -130,6 +131,17 @@ class Draft:
             # 将媒体信息添加到draft的元数据库
             # self.__add_srt_to_meta_info(media)
         pass
+
+    def addText(self, text: str, font_info=None, index=0, start=0, **kwargs):
+        _index = index
+
+        media_text = MediaText(text=text, font_info=font_info, **kwargs)
+
+        # 将媒体信息添加到draft的素材库
+        self.__add_srt_to_content_materials(media_text)
+
+        # 将媒体信息添加到draft的轨道库
+        self.__add_srt_to_content_tracks(media_text, start=start)
 
     def calc_draft_duration(self):
         """

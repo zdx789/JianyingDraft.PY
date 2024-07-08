@@ -6,15 +6,20 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
+import json
+
 from JianYingDraft.core import template
 from JianYingDraft.core.media import Media
 from JianYingDraft.utils import tools
+from JianYingDraft.utils.dataStruct import SubtitleFontData
+from JianYingDraft.utils.jsonCustionEncoder import JsonCustomEncoder
 
 
 class MediaText(Media):
-    def __init__(self):
+    def __init__(self, text, font_info=None):
         super().__init__()
-
+        self.font_info = font_info
+        self.text = text
     pass
 
     def _set_material_data_for_content(self):
@@ -29,6 +34,11 @@ class MediaText(Media):
     def __generate_text(self):
         _self = self
         entity = template.get_text(self.id)
+
+        content = template.get_subtitle_content(self.text, font_info=self.font_info)
+
+        entity["content"] = json.dumps(content, cls=JsonCustomEncoder)
+
         return entity
 
     def change_color(self, color):
